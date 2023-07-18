@@ -77,9 +77,6 @@ class OwlCarousel extends Component {
           owl2.trigger('destroy.owl');
         }
 
-
-
-
         // break;
       }
     } 
@@ -141,12 +138,7 @@ class OwlCarousel extends Component {
     const slider_autoplay = this.check_yes_no('slider_item_autoplay','false');
     const slider_hoverPause = this.check_yes_no('slider_item_autoplay_hover_pause','false');
 
-    console.log(slider_nav)
 
-
-
-    // console.log(item_margin);
-    // console.log(item_count);
     var owl2 = $(".divi-custom-slider.owl-carousel");
     owl2.owlCarousel({
         margin: slider_margin,
