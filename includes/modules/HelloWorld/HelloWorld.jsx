@@ -15,6 +15,7 @@ class HelloWorld extends Component {
     return (
       <h1>
         <Content/>
+        <b>Amoda Nilnuwan Deshanjana</b>
       </h1>
     );
   }

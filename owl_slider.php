@@ -37,3 +37,11 @@ function owl_initialize_extension() {
 }
 add_action( 'divi_extensions_init', 'owl_initialize_extension' );
 endif;
+
+function add_extra_css_js(){
+	wp_enqueue_script('Owl_carousel_js',plugin_dir_url( __FILE__ ).'/scripts/owl.carousel.min.js',array('jquery'), '1.0', true);
+	wp_enqueue_style('Owl_carousel_css',plugin_dir_url( __FILE__ ).'/styles/owl.carousel.min.css',false,'1.1','all');
+	wp_enqueue_style('Owl_carousel_theme_css',plugin_dir_url( __FILE__ ).'/styles/owl.theme.default.min.css',false,'1.1','all');
+}
+
+add_action( 'wp_enqueue_scripts', 'add_extra_css_js');
