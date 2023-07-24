@@ -7,7 +7,6 @@ import './style.css';
 import '../../../styles/owl.carousel.min.css';
 import '../../../styles/owl.theme.default.min.css';
 import '../../../scripts/owl.carousel.min.js';
-import image from '../../../img/owl_slider_left.png';
 import emptyImage from '../../../img/no-photo-available.png';
 import left_icon from '../../../img/owl_slider_left.png';
 import right_icon from '../../../img/owl_slider_right.png';
@@ -18,30 +17,68 @@ class OwlCarousel extends Component {
 
   static slug = 'owl_carousel';
   owl_status = false;
+  
 
 
   render() {
     const Items = this.props.content;
     const lazyClass = this.lazy_class();
     const lazyStat = this.check_yes_no('slider_item_lazyload','false');
+    const testurl = this.props.__slider_url;
+    const sampleImage1 = testurl+"img/sample1.jpg";
+    const sampleImage2 = testurl+"img/sample2.jpg";
+    const sampleImage3 = testurl+"img/sample3.jpg";
+    console.log(testurl);
     console.log("render");
     console.log(Items);
     
     if(!Items.length){
       console.log(Items.length+" - Array is Empty");
       return (
+        <div>
+          <p style={{'color':'red'}}>*This sample data will be relpaced when you add items to the slider & this will not display in frontend unless you add items*</p>
         <div className="divi-custom-slider owl-carousel owl-theme">
-           <div class="music-img-box item">
-            <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
-              <img loading="lazy" width="300" height="300" decoding="async" class="music-img" src="https://amodaintdev.wpengine.com/wp-content/uploads/2023/05/Madness.jpg"/>
-              <div class="music-info">
-                <div class="song-info">
-                  <p class="song-name">asd</p>
-                  <p class="artist-name">MIST</p>
+           <div className="single-item item">
+            <a href="" target="_blank">
+              <img className="single-img" src={sampleImage1} alt=''/>
+              <div className="single-info">
+                <div className="single-content">
+                  <p className="">Your Text Goes Here</p>
+                </div> 
+              </div>
+            </a>
+            </div>
+            <div className="single-item item">
+            <a href="" target="_blank">
+              <img className="single-img" src={sampleImage2} alt=''/>
+              <div className="single-info">
+                <div className="single-content">
+                  <p className="">Your Text Goes Here</p>
+                </div> 
+              </div>
+            </a>
+            </div>
+            <div className="single-item item">
+            <a href="" target="_blank">
+              <img className="single-img" src={sampleImage3} alt=''/>
+              <div className="single-info">
+                <div className="single-content">
+                  <p className="">Your Text Goes Here</p>
                 </div> 
               </div>
             </a>
             </div> 
+            <div className="single-item item">
+            <a href="" target="_blank">
+              <img className="single-img" src={sampleImage1} alt=''/>
+              <div className="single-info">
+                <div className="single-content">
+                  <p className="">Your Text Goes Here</p>
+                </div> 
+              </div>
+            </a>
+            </div>
+        </div>
         </div>
         );
     }else{
@@ -169,12 +206,13 @@ class OwlCarousel extends Component {
     const slider_dotsEach = this.check_yes_no('slider_item_dots_each','false');
     const slider_autoplay = this.check_yes_no('slider_item_autoplay','false');
     const slider_hoverPause = this.check_yes_no('slider_item_autoplay_hover_pause','false');
-    console.log(slider_dots+'- Dots');
-    console.log(slider_nav+'- Nav');
+
+    const Items = this.props.content;
+
 
     var owl2 = $(".divi-custom-slider.owl-carousel");
     owl2.owlCarousel({
-        margin: slider_margin,
+        margin: Items.length?slider_margin:10,
         nav:slider_nav,
         dots:slider_dots,
         loop:slider_loop,
@@ -206,7 +244,7 @@ class OwlCarousel extends Component {
             stagePadding: 10,
           },
           1000: {
-            items: slider_count,
+            items: Items.length?slider_count:3,
             stagePadding: 0,
           }
         }

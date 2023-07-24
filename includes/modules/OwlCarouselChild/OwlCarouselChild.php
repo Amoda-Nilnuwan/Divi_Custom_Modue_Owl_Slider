@@ -99,15 +99,18 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
         $image_url = $image_url==='' ? $plugin_root_dir_path.'/img/no-photo-available.png' : $image_url;
         $sliderImageFit = isset($this->props['slider_image_fit']) ? $this->props['slider_image_fit'] : 'none';
         $slider_item_lazyload = isset($attrs['slider_item_lazyload']) ? $attrs['slider_item_lazyload'] : 'false123';
+        $slider_item_url = isset($attrs['link_option_url']) ? $attrs['link_option_url'] : '';
+        $slider_item_url_target = isset($attrs['link_option_url_new_window']) ? $attrs['link_option_url_new_window'] : 'off';
+        $slider_item_url_target = $slider_item_url_target==='on'?'_blank':'_self';
 		ob_start();
+        
 		// $plugin_dir_path = plugin_dir_path(__FILE__);
 		
 ?>
-
 <!-- HTML code here -->
-                 
+<!-- <?php var_dump($this->props); ?>           -->
     <div class="single-item item">
-        <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
+        <a href="<?php echo $slider_item_url; ?>" target="<?php echo $slider_item_url_target; ?>">
             <img class="single-img owl-lazy-not <?php echo $sliderImageFit; ?>" src="<?php echo $image_url; ?>" data-src="<?php echo $image_url; ?>">
             <div class="single-info">
                 <div class="single-content">

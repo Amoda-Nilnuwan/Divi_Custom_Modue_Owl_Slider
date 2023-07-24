@@ -14,33 +14,7 @@ class OWL_OwlCarousel extends ET_Builder_Module {
 
 	public function init() {
 		$this->name = esc_html__( 'Owl-Carousel', 'owl-owl_slider' );
-        add_action( 'et_builder_frontend_before_render', array( $this, 'add_default_child_item' ) );
 	}
-
-    function add_default_child_item() {
-        if ( 'et_pb_custommodule' !== get_post_type() ) {
-          // Check if the current post type is the custom module.
-          return;
-        }
-    
-        // Get the current module instance.
-        $instance = ET_Builder_Element::get_instance( get_the_ID() );
-    
-        // Check if there are any child items.
-        if ( empty( $instance->fields['child_items'] ) ) {
-          // Add your default child item data here.
-          $default_child_item = array(
-            'title' => 'Default Child Item',
-            'content' => 'This is the default content of the child item.',
-          );
-    
-          // Add the default child item to the child_items field.
-          $instance->fields['child_items'][] = $default_child_item;
-    
-          // Save the updated instance.
-          $instance->save();
-        }
-      }
 
 	public function get_fields() {
 		// return array(
@@ -211,7 +185,7 @@ class OWL_OwlCarousel extends ET_Builder_Module {
                     'step' => 1,
                 ),
             'unitless' => true,
-            'default' => 0,
+            'default' => 2000,
             'fixed_unit' => '',
             'validate_unit' => false,
         ];
@@ -233,7 +207,7 @@ class OWL_OwlCarousel extends ET_Builder_Module {
                     'step' => 1,
                 ),
             'unitless' => true,
-            'default' => 0,
+            'default' => 2000,
             'fixed_unit' => '',
             'validate_unit' => false,
         ];
@@ -245,12 +219,23 @@ class OWL_OwlCarousel extends ET_Builder_Module {
                     'step' => 1,
                 ),
             'unitless' => true,
-            'default' => 0,
+            'default' => 2000,
             'fixed_unit' => '',
             'validate_unit' => false,
         ];
+
+        $plugin_dir_path = plugin_dir_url( __FILE__ );
+        $fields["__slider_url"] = [
+            'type' => 'çomputed',
+            'computed_callback' => array('OWL_OwlCarousel','my_callback'),
+            'default' => $plugin_dir_path,
+        ];
         return $fields;
 	}
+
+    public static function my_callback(){
+        
+    }
 
 	public function check_yes_no($option_slug,$default){
         $val = isset($this->props[$option_slug])?$this->props[$option_slug]:$default;
@@ -294,7 +279,6 @@ class OWL_OwlCarousel extends ET_Builder_Module {
 
         ?>
 
-        <?php var_dump($slider_lazyLoad); ?>
         <div class="divi-custom-slider owl-carousel owl-theme">                       
             <?php echo $child_module_content; ?>
         </div>
@@ -347,6 +331,10 @@ class OWL_OwlCarousel extends ET_Builder_Module {
 
             });
         });
+
+
+        var myStringFromPHP = 'test_img_url';
+
         </script>
 
     <?php
