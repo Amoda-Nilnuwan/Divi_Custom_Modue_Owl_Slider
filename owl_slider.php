@@ -45,3 +45,16 @@ function add_extra_css_js(){
 }
 
 add_action( 'wp_enqueue_scripts', 'add_extra_css_js');
+
+function load_sample_child_module($content, $function_name, $module) {
+    // Check if the current module is your main custom module
+    if ($module->slug === 'owl_carousel') {
+        // Add the shortcode of the child module you want to load
+        $sample_child_shortcode = '[owl_carousel_child label="test" single_content="111" slider_image="http://amoda-nilnuwan.local/wp-content/uploads/2023/07/Screenshot-2022-09-14-232152.png" slider_image_fit="scale-down" _builder_version="4.21.0" _module_preset="default" global_colors_info="{}"][/owl_carousel_child]';
+        $content .= do_shortcode($sample_child_shortcode);
+    }
+
+    return $content;
+}
+
+add_filter('et_builder_module_shortcode', 'load_sample_child_module', 10, 3);

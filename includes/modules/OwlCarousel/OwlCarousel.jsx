@@ -17,28 +17,59 @@ import right_icon from '../../../img/owl_slider_right.png';
 class OwlCarousel extends Component {
 
   static slug = 'owl_carousel';
+  owl_status = false;
+
 
   render() {
     const Items = this.props.content;
-    return (
-
-    <div className="divi-custom-slider owl-carousel owl-theme">
-        {Items.map((item, index) => (
-        <div className="single-item item">
-          <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
-              <img className={"single-img owl-laz8y "+item.props.attrs.slider_image_fit} style={{width:item.props.attrs.single_width}} src={!item.props.attrs.slider_image ? emptyImage : item.props.attrs.slider_image}/>
-              <div className="single-info">
-                  <div className="single-content">
-                      <div style={{ whiteSpace: "pre-wrap"}} dangerouslySetInnerHTML={{__html:item.props.attrs.single_content}}></div>
-                  </div>
-                  <div className="single-extra"></div>
+    const lazyClass = this.lazy_class();
+    const lazyStat = this.check_yes_no('slider_item_lazyload','false');
+    console.log("render");
+    console.log(Items);
+    
+    if(!Items.length){
+      console.log(Items.length+" - Array is Empty");
+      return (
+        <div className="divi-custom-slider owl-carousel owl-theme">
+           <div class="music-img-box item">
+            <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
+              <img loading="lazy" width="300" height="300" decoding="async" class="music-img" src="https://amodaintdev.wpengine.com/wp-content/uploads/2023/05/Madness.jpg"/>
+              <div class="music-info">
+                <div class="song-info">
+                  <p class="song-name">asd</p>
+                  <p class="artist-name">MIST</p>
+                </div> 
               </div>
-          </a>
+            </a>
+            </div> 
         </div>
+        );
+    }else{
+      return (
+        <div className="divi-custom-slider owl-carousel owl-theme">
+            {Items.map((item, index) => (
+            <div className="single-item item">
+              <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
+                  <img className={Array.prototype.join.call(["single-img",lazyClass,item.props.attrs.slider_image_fit ? item.props.attrs.slider_image_fit : "none",]," ")} style={{width:item.props.attrs.single_width}} src={!item.props.attrs.slider_image ? emptyImage : item.props.attrs.slider_image} data-src={lazyStat? (!item.props.attrs.slider_image ? emptyImage : item.props.attrs.slider_image):''}/>
+                  <div className="single-info">
+                      <div className="single-content">
+                          <div style={{ whiteSpace: "pre-wrap"}} dangerouslySetInnerHTML={{__html:item.props.attrs.single_content}}></div>
+                      </div>
+                      <div className="single-extra"></div>
+                  </div>
+              </a>
+            </div>
+    
+              ))}
+        </div>
+        );
+    }
 
-          ))}
-    </div>
-    );
+  }
+
+  lazy_class(){
+    const lazy=this.check_yes_no('slider_item_lazyload','false') ? 'owl-lazy' : '';
+    return lazy;
   }
   
   componentDidMount() {
@@ -52,9 +83,8 @@ class OwlCarousel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState){
-    console.log(this.props);
     for (const prop in this.props) {
-      console.log(this.props[prop] instanceof Object);
+
       // if(this.props[prop] instanceof Object){
       //           console.log(this.props[prop]);        // console.log(this.props[prop]);
       //   // console.log(nextProps[prop]);
@@ -62,19 +92,17 @@ class OwlCarousel extends Component {
       // }
       if (this.props[prop] !== nextProps[prop]) {
         // The prop has changed
-        console.log(this.props[prop]+" - "+nextProps[prop]);
-        console.log(this.props[prop]);
-        console.log(nextProps[prop]);
-        console.log(prop);
+        // console.log(this.props[prop]+" - "+nextProps[prop]);
+        // console.log(this.props[prop]);
+        // console.log(nextProps[prop]);
+        // console.log(prop);
 
         if(this.props[prop] instanceof Object){
           if (prop === "content" && this.props["content"].length !== nextProps["content"].length) {
-            var owl2 = $(".divi-custom-slider.owl-carousel");
-            owl2.trigger('destroy.owl');
+            this.owl_destroy();
           }
         }else{
-          var owl2 = $(".divi-custom-slider.owl-carousel");
-          owl2.trigger('destroy.owl');
+          this.owl_destroy();
         }
 
         // break;
@@ -104,8 +132,10 @@ class OwlCarousel extends Component {
     //   }
     // } 
     console.log("Did Update");
-    console.log(emptyImage);
-    this.carousel_init();
+    if(!this.owl_status){
+      this.carousel_init();
+    }
+    
   }
 
   check_yes_no(option_slug,default_val){
@@ -116,6 +146,8 @@ class OwlCarousel extends Component {
         return false;
     }
 }
+
+
 
   carousel_init(){
     console.log("Carousel Init");
@@ -137,7 +169,8 @@ class OwlCarousel extends Component {
     const slider_dotsEach = this.check_yes_no('slider_item_dots_each','false');
     const slider_autoplay = this.check_yes_no('slider_item_autoplay','false');
     const slider_hoverPause = this.check_yes_no('slider_item_autoplay_hover_pause','false');
-
+    console.log(slider_dots+'- Dots');
+    console.log(slider_nav+'- Nav');
 
     var owl2 = $(".divi-custom-slider.owl-carousel");
     owl2.owlCarousel({
@@ -178,6 +211,14 @@ class OwlCarousel extends Component {
           }
         }
     });
+    this.owl_status = true;
+  }
+
+  owl_destroy(){
+    var owl2 = $(".divi-custom-slider.owl-carousel");
+    owl2.trigger('destroy.owl');
+    console.log("owl destroyed");
+    this.owl_status = false;
   }
 
 

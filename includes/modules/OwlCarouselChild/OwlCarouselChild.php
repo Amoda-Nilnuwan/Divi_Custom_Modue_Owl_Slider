@@ -14,7 +14,7 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
 	);
 
 	public function init() {
-		$this->name = esc_html__( 'Owl-Carousel', 'owl-owl_slider' );
+		$this->name = esc_html__( 'Owl-Carousel-Child', 'owl-owl_slider' );
 	}
 
 	public function get_fields() {
@@ -63,6 +63,7 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
                 'scale-down' => esc_html__('Scale Down','owl-owl_slider'),
                 'none' => esc_html__('None','owl-owl_slider'),
             ),
+            'default' => 'none',
         ];
         $fields["single_width"] = [
             'label' => esc_html__('Image Width','owl-owl_slider'),
@@ -96,8 +97,8 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
         
         $image_url = $this->props['slider_image'] ?? $plugin_root_dir_path.'/img/no-photo-available.png';
         $image_url = $image_url==='' ? $plugin_root_dir_path.'/img/no-photo-available.png' : $image_url;
-        $sliderImageFit = isset($this->props['slider_image_fit']) ? $this->props['slider_image_fit'] : '';
-
+        $sliderImageFit = isset($this->props['slider_image_fit']) ? $this->props['slider_image_fit'] : 'none';
+        $slider_item_lazyload = isset($attrs['slider_item_lazyload']) ? $attrs['slider_item_lazyload'] : 'false123';
 		ob_start();
 		// $plugin_dir_path = plugin_dir_path(__FILE__);
 		
@@ -107,7 +108,7 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
                  
     <div class="single-item item">
         <a href="https://open.spotify.com/track/5yxTv8Na3xU840LygHYkzD?si=c29d36ef956d4ef2" target="_blank">
-            <img class="single-img owl-laz8y <?php echo $sliderImageFit; ?>" src="<?php echo $image_url; ?>" data-src="<?php echo $image_url; ?>">
+            <img class="single-img owl-lazy-not <?php echo $sliderImageFit; ?>" src="<?php echo $image_url; ?>" data-src="<?php echo $image_url; ?>">
             <div class="single-info">
                 <div class="single-content">
                     <?php echo $this->props['single_content']; ?>
@@ -118,7 +119,8 @@ class OWL_OwlCarouselChild extends ET_Builder_Module {
     </div>
 
 <?php
-
+// echo $slider_item_lazyload;
+// var_dump($attrs);
 $html = ob_get_clean();
 
 return $html;

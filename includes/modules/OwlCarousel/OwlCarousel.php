@@ -14,7 +14,33 @@ class OWL_OwlCarousel extends ET_Builder_Module {
 
 	public function init() {
 		$this->name = esc_html__( 'Owl-Carousel', 'owl-owl_slider' );
+        add_action( 'et_builder_frontend_before_render', array( $this, 'add_default_child_item' ) );
 	}
+
+    function add_default_child_item() {
+        if ( 'et_pb_custommodule' !== get_post_type() ) {
+          // Check if the current post type is the custom module.
+          return;
+        }
+    
+        // Get the current module instance.
+        $instance = ET_Builder_Element::get_instance( get_the_ID() );
+    
+        // Check if there are any child items.
+        if ( empty( $instance->fields['child_items'] ) ) {
+          // Add your default child item data here.
+          $default_child_item = array(
+            'title' => 'Default Child Item',
+            'content' => 'This is the default content of the child item.',
+          );
+    
+          // Add the default child item to the child_items field.
+          $instance->fields['child_items'][] = $default_child_item;
+    
+          // Save the updated instance.
+          $instance->save();
+        }
+      }
 
 	public function get_fields() {
 		// return array(
@@ -260,25 +286,25 @@ class OWL_OwlCarousel extends ET_Builder_Module {
         $slider_dotEach       = $this->check_yes_no('slider_item_dots_each','false');
         $slider_autoplay      = $this->check_yes_no('slider_item_autoplay','false');
         $slider_HoverPause    = $this->check_yes_no('slider_item_autoplay_hover_pause','false');
-
+        $child_module_content = $this->props['content'];
+        $child_module_content = $slider_lazyLoad === 'true' ? str_replace("owl-lazy-not","owl-lazy",$child_module_content):$child_module_content;
 
 
 
 
         ?>
-        <?php var_dump($slider_autoplay); ?>
-        <?php echo($slider_autoplaySpeed=='0'?'false123':$slider_autoplaySpeed); ?>
-        <?php echo $slider_dot;?>
-        <?php echo $this->props['slider_item_navigation']?>
-        <div class="divi-custom-slider owl-carousel owl-theme">                       
-            <?php echo $this->props['content']; ?>
-        </div>
-        <?php echo $slider_margin;?>
 
+        <?php var_dump($slider_lazyLoad); ?>
+        <div class="divi-custom-slider owl-carousel owl-theme">                       
+            <?php echo $child_module_content; ?>
+        </div>
+        <?php //var_dump($child_module_content);?>
         <script>
 
         $( document ).ready(function() {
             console.log( "ready!" );
+            
+
 
             $('.divi-custom-slider.owl-carousel').owlCarousel({
 
