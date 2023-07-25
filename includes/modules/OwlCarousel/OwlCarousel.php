@@ -7,7 +7,7 @@ class OWL_OwlCarousel extends ET_Builder_Module {
     public $child_slug = 'owl_carousel_child';
 
 	protected $module_credits = array(
-		'module_uri' => 'Surge.global',
+		'module_uri' => 'https://github.com/Amoda-Nilnuwan/Divi_Custom_Module_Owl_Slider/blob/dev/build/owl_slider.zip',
 		'author'     => 'Amoda Nilnuwan',
 		'author_uri' => 'http://amoda.myprofile.lk/',
 	);
